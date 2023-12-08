@@ -59,45 +59,49 @@ app.layout = html.Div([
             style={'textAlign':'center', 'backgroundColor':'lightblue', 'borderRadius':'10px', 'height':'50px'}),
     html.Div(
     dcc.Tabs(id='tabs', value='artist-tab', children=[
+
         dcc.Tab(label=f'Most listened Artist: {most_listened_artist}',value='artist-tab', children=[
-            dcc.Graph(id='rankartistfig',figure=Rankartistfig),
+            dcc.Graph(id='rankartistfig',figure=Rankartistfig,style={'height': '400px'}),
             html.Label('Pick a date here'),
             dcc.Dropdown(id='dropdown-artist', options=week_options,
                          value=str(weekly_top10_artists['week'].iloc[-1]), clearable=False),
-            dcc.Graph(id='output-dropdown-artist')
-        ]),
+            dcc.Graph(id='output-dropdown-artist', style={'height': '400px'})
+        ],style={'borderRadius': '10px','backgroundColor':'lightblue'}),
+
         dcc.Tab(label=f'Most listened Album: {most_listened_album}',value='album-tab', children=[
-            dcc.Graph(id='rankalbumfig',figure=Rankalbumfig),
+            dcc.Graph(id='rankalbumfig',figure=Rankalbumfig, style={'height': '400px'}),
             html.Label('Pick a date here'),
             dcc.Dropdown(id='dropdown-album', options=week_options,
                          value=str(weekly_top10_albums['week'].iloc[-1]), clearable=False),
-            dcc.Graph(id='output-dropdown-album')
-        ]),
+            dcc.Graph(id='output-dropdown-album', style={'height': '400px'})
+        ],style={'borderRadius': '10px'}),
+
         dcc.Tab(label=f'Most listened Track: {most_listened_track}',value='track-tab', children=[
-            dcc.Graph(id='ranktrackfig',figure=Ranktrackfig),
+            dcc.Graph(id='ranktrackfig',figure=Ranktrackfig, style={'height': '400px'}),
             html.Label('Pick a date here'),
             dcc.Dropdown(id='dropdown-track', options=week_options,
                          value=str(weekly_top10_tracks['week'].iloc[-1]), clearable=False),
-            dcc.Graph(id='output-dropdown-track')
-        ]),
+            dcc.Graph(id='output-dropdown-track', style={'height': '400px'})
+        ],style={'borderRadius': '10px'}),
+
         dcc.Tab(label=f'Most listened Listener: {most_listened_listener}',value='listener-tab', children=[
-            dcc.Graph(id='ranklistenerfig',figure=Ranklistenerfig),
+            dcc.Graph(id='ranklistenerfig',figure=Ranklistenerfig,style={'height': '400px'}),
             html.Label('Pick a date here'),
             dcc.Dropdown(id='dropdown-listener', options=week_options,
                          value=str(weekly_top10_listeners['week'].iloc[-1]), clearable=False),
-            dcc.Graph(id='output-dropdown-listener')
-        ]),
+            dcc.Graph(id='output-dropdown-listener', style={'height': '400px'})
+        ],style={'borderRadius': '10px'}),
     ]),
     
-    style={'width': '60%', 'float': 'left','border-radius': '10px'}
+    style={'width': '60%', 'float': 'left'}
         
     ),
     
     html.Div([
-        dcc.Graph(id='bubblefig',figure=bubblefig),
-        dcc.Input(id='artist-input', type='text', placeholder='Enter an Artist'),
-        dcc.Graph(id='track-trend-plot'),
-    ], style={'width': '30%', 'float': 'right'})
+        dcc.Graph(id='bubblefig',figure=bubblefig, style={'width': '550px', 'height': '547px'}),
+        dcc.Input(id='artist-input', type='text', placeholder='Enter an Artist', style={'width': '500px', 'height': '30px'}),
+        dcc.Graph(id='track-trend-plot', style={'width': '550px', 'height': '400px'}),
+    ], style={'width': '40%', 'float': 'right'})
 
 ])
 
