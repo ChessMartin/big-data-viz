@@ -65,3 +65,14 @@ def Cross_Tabulation(name1:str,name2:str):
     result = pd.DataFrame(rows, columns=['{}'.format(name1),'{}'.format(name2), 'count'])
     return result
 
+def year_count(name:str):
+    sql = f"""SELECT {name}, YEAR(time) AS year, COUNT(*) AS count
+            FROM music
+            WHERE time IS NOT NULL
+            GROUP BY {name}, YEAR(time)
+            ORDER BY {name}, YEAR(time)
+            ;"""
+    mycursor.execute(sql)
+    rows = mycursor.fetchall()
+    result = pd.DataFrame(rows, columns=['{}'.format(name),'year', 'count'])
+    return result

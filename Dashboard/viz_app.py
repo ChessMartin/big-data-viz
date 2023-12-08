@@ -48,10 +48,15 @@ bubblefig = px.scatter(bubble_df, x='artist', y='listener', size='count', color=
                  labels={'count': 'Track Count'},
                  title='Bubble Plot of Listener-Artist TrackCount')
 
+#fourth graph
+artist_year = viz_query.year_count("artist")
+total_track = artist_year.groupby(['year']).size().reset_index(name='count')
+yearly_track = artist_year
 
 app.layout = html.Div([
 
-    html.H1(children='Playlist KPI Dashboard', style={'textAlign': 'center'}),
+    html.H1(children='Playlist KPI Dashboard',
+            style={'textAlign':'center', 'backgroundColor':'lightblue', 'borderRadius':'10px', 'height':'50px'}),
     html.Div(
     dcc.Tabs(id='tabs', value='artist-tab', children=[
         dcc.Tab(label=f'Most listened Artist: {most_listened_artist}',value='artist-tab', children=[
@@ -88,12 +93,11 @@ app.layout = html.Div([
         
     ),
     
-    html.Div(
-    
-    dcc.Graph(id='bubblefig',figure=bubblefig),
-    style={'width': '30%', 'float': 'right'}   
-        
-    )
+    html.Div([
+        dcc.Graph(id='bubblefig',figure=bubblefig),
+        dcc.Input(id='artist-input', type='text', placeholder='Enter an Artist'),
+        dcc.Graph(id='track-trend-plot'),
+    ], style={'width': '30%', 'float': 'right'})
 
 ])
 
@@ -143,6 +147,35 @@ def update_output_listener(selected_week):
     return update_output(selected_week, 'listener-tab', weekly_top10_listeners, 'listener')
 
 
+#Line Plot
+@app.callback(
+    Output('track-trend-plot', 'figure'),
+    [Input('artist-input', 'value')]
+)
+
+def update_track_trend_plot(selected_artist:str):
+    if not selected_artist:
+        fig = px.line(
+            total_track, x='year', y='count',
+            labels={'count': 'count', 'year': 'year'},
+            title=f"Total Count of each year",
+            template='seaborn'
+        )
+        fig.update_layout(xaxis_range=[2000, 2023])
+        return fig
+    
+    
+    else:
+        filtered_data = yearly_track[yearly_track['artist'] == '{}'.format(selected_artist)]
+        fig = px.line(
+            filtered_data, x='year', y='count',
+            labels={'count': 'count', 'year': 'year'},
+            title=f"Track Count of {selected_artist} each year",
+            template='seaborn'
+        )
+        fig.update_layout(xaxis_range=[2000, 2023])
+        
+        return fig
 
 if __name__ == '__main__':
     
